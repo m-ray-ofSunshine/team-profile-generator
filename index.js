@@ -3,9 +3,12 @@ const fs = require("fs");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const template = require("./src/htmlTemplate")
 
 var team = [];
+var finaldoc = `
 
+`
 
 
 function managerStart(){
@@ -36,7 +39,7 @@ function managerStart(){
     .then(data => {
         const mgmt = new Manager(data.name, data.id, data.email, data.office)
         team.push(mgmt)
-        console.log(team);
+        
         otherEmployees()
 
     });
@@ -61,7 +64,7 @@ function otherEmployees(){
         }else if(data.nextEmployee==="Intern"){
             internStart();
         }else{
-            renderHTML()
+            sortByRole()
         }
 
     })
@@ -94,7 +97,7 @@ function engineerStart(){
     .then(data => {
         const eng = new Engineer(data.name, data.id, data.email, data.github)
         team.push(eng)
-        console.log(team);
+        
         otherEmployees()
 
     });
@@ -127,9 +130,53 @@ function internStart(){
     .then(data => {
         const int = new Intern(data.name, data.id, data.email, data.school)
         team.push(int)
-        console.log(team);
+        
         otherEmployees()
     });
+}
+
+function sortByRole(){
+    team.forEach(employee=>{
+      employee.role = employee.getRole();
+    })
+    let manager = team.filter(employee=> employee.role ==="Manager")
+    let engineers = team.filter(employee=> employee.role ==="Engineer")
+    let interns = team.filter(employee=> employee.role ==="Intern")
+    buildHTML(manager,engineers,interns)
+}
+
+function buildHTML(manager,engineers,interns){
+    finaldoc += template.htmlBegin
+    renderManager(manager)
+    renderEngineers(engineers)
+    renderInterns(interns)
+    finaldoc += template.htmlEnd
+    fs.writeFile('index.html', finaldoc, function (err) {
+        if (err) throw err;
+        console.log('HTML Created!');
+      });
+}
+
+
+function renderManager(manager){
+ manager.forEach(item =>{
+     let managerCard = template.createManagerCard(item.name, item.id, item.email, item.officeNumber )
+     finaldoc += managerCard
+ })
+}
+
+function renderEngineers(engineers){
+    engineers.forEach(item =>{
+        let engineerCard = template.createEngineerCard(item.name, item.id, item.email, item.github )
+        finaldoc += engineerCard
+    })
+}
+
+function renderInterns(interns){
+    interns.forEach(item =>{
+        let internCard = template.createInternCard(item.name, item.id, item.email, item.school )
+        finaldoc += internCard
+    })
 }
 
 function appStart() {
