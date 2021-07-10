@@ -26,7 +26,7 @@ describe("Engineer", ()=> {
         })
     })
     describe("getRole", ()=>{
-        it("should return the assigned role",()=>{
+        it("should return the Github Account",()=>{
             const newEng = new Engineer("Matt", 45, "mray@gmail.com", "m-ray-of-Sunshine")
             expect(newEng.getGithub()).toEqual("m-ray-of-Sunshine")
         })
