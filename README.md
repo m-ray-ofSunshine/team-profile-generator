@@ -24,6 +24,8 @@ Just run npm install.
 
 Run node index.js. Answer the prompts to build the Manager. Once that is complete you can build either a Engineer or an Intern. This will continue until you select no more team members. Once this is selected an html file will be created.
 
+![Command line](./assets/img/commandLine.JPG)
+
 [Link to video of usage](https://drive.google.com/file/d/1lIHUOuKu2HaVBbTGOS_81zreKdQaOEID/view?usp=sharing)
 
 ## Contributing
